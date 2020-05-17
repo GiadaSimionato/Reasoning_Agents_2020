@@ -1,0 +1,19 @@
+word,lambda_TL_expression
+always;$x.H x
+go to;$x.at(x)
+the;$x.x
+breakroom;breakroom
+and;$x$y.F(x&Fy)
+report;$x$y.report(x,y)
+location;location
+of;$x.x
+blue box;blue_box
+when;$x$y.G(x->y)
+detect;$x.detect(x)
+do not;$x.!x
+position;position
+of;$x.x
+recharge station;recharge_station
+blue ball;blue_ball
+red ball;red_ball
+yellow ball;yellow_ball

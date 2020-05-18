@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "babyai"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "1.15.4"
+gym = "^0.17.1"
+blosc = "^1.9.1"
+gym_minigrid = "^1.0.1"
+torch = { url = "https://download.pytorch.org/whl/cpu/torch-1.5.0%2Bcpu-cp38-cp38-linux_x86_64.whl" }
+matplotlib = "^3.2.1"
+tensorboardX = "^2.0"
+tensorboard = "^2.2.1"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.5.0"
+flake8 = "^3.7.9"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

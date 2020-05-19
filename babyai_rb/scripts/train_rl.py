@@ -204,48 +204,48 @@ while status['num_frames'] < args.frames:
     # Update parameters
 
     update_start_time = time.time()
-    # logs = algo.update_parameters()
+    logs = algo.update_parameters()
     update_end_time = time.time()
 
-    # status['num_frames'] += logs["num_frames"]
-    # status['num_episodes'] += logs['episodes_done']
+    status['num_frames'] += logs["num_frames"]
+    status['num_episodes'] += logs['episodes_done']
     status['i'] += 1
 
     # # Print logs
 
-    # if status['i'] % args.log_interval == 0:
-    #     total_ellapsed_time = int(time.time() - total_start_time)
-    #     fps = logs["num_frames"] / (update_end_time - update_start_time)
-    #     duration = datetime.timedelta(seconds=total_ellapsed_time)
-    #     return_per_episode = utils.synthesize(logs["return_per_episode"])
-    #     bolt_return_per_episode = utils.synthesize(logs["bolt_return_per_episode"])
-    #     vanilla_return_per_episode = utils.synthesize(logs["vanilla_return_per_episode"])
-    #     success_per_episode = utils.synthesize(
-    #         [1 if r > 0 else 0 for r in logs["return_per_episode"]])
-    #     num_frames_per_episode = utils.synthesize(logs["num_frames_per_episode"])
+    if status['i'] % args.log_interval == 0:
+        total_ellapsed_time = int(time.time() - total_start_time)
+        fps = logs["num_frames"] / (update_end_time - update_start_time)
+        duration = datetime.timedelta(seconds=total_ellapsed_time)
+        return_per_episode = utils.synthesize(logs["return_per_episode"])
+        bolt_return_per_episode = utils.synthesize(logs["bolt_return_per_episode"])
+        vanilla_return_per_episode = utils.synthesize(logs["vanilla_return_per_episode"])
+        success_per_episode = utils.synthesize(
+            [1 if r > 0 else 0 for r in logs["return_per_episode"]])
+        num_frames_per_episode = utils.synthesize(logs["num_frames_per_episode"])
 
-    #     data = [status['i'], status['num_episodes'], status['num_frames'],
-    #             fps, total_ellapsed_time,
-    #             *return_per_episode.values(),
-    #             *bolt_return_per_episode.values(),
-    #             *vanilla_return_per_episode.values(),
-    #             success_per_episode['mean'],
-    #             *num_frames_per_episode.values(),
-    #             logs["entropy"], logs["value"], logs["policy_loss"], logs["value_loss"],
-    #             logs["loss"], logs["grad_norm"]]
+        data = [status['i'], status['num_episodes'], status['num_frames'],
+                fps, total_ellapsed_time,
+                *return_per_episode.values(),
+                *bolt_return_per_episode.values(),
+                *vanilla_return_per_episode.values(),
+                success_per_episode['mean'],
+                *num_frames_per_episode.values(),
+                logs["entropy"], logs["value"], logs["policy_loss"], logs["value_loss"],
+                logs["loss"], logs["grad_norm"]]
 
-    #     format_str = ("U {} | E {} | F {:06} | FPS {:04.0f} | D {} | R:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
-    #                   "Rb:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | Rv:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
-    #                   "S {:.2f} | F:xsmM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | "
-    #                   "pL {: .3f} | vL {:.3f} | L {:.3f} | gN {:.3f} | ")
+        format_str = ("U {} | E {} | F {:06} | FPS {:04.0f} | D {} | R:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
+                      "Rb:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | Rv:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
+                      "S {:.2f} | F:xsmM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | "
+                      "pL {: .3f} | vL {:.3f} | L {:.3f} | gN {:.3f} | ")
 
-    #     logger.info(format_str.format(*data))
-    #     if args.tb:
-    #         assert len(header) == len(data)
-    #         for key, value in zip(header, data):
-    #             writer.add_scalar(key, float(value), status['num_frames'])
+        logger.info(format_str.format(*data))
+        if args.tb:
+            assert len(header) == len(data)
+            for key, value in zip(header, data):
+                writer.add_scalar(key, float(value), status['num_frames'])
 
-    #     csv_writer.writerow(data)
+        csv_writer.writerow(data)
 
     # Save obss preprocessor vocabulary and model
 

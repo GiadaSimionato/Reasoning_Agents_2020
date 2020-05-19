@@ -1,4 +1,4 @@
-babyai_rb/scripts/logs
-babyai_rb/scripts/models
+babyai_rb/scripts/logs/
+babyai_rb/scripts/models/
 babyai_rb/copy.sh
 babyai_rb/rb.ipynb

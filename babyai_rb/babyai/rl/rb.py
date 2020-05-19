@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 class RestrainingBolt(ABC):
 
     def __init__(self, num_states, final_states,
-                 initial_state=0, reward=0.5):
+                 initial_state=0, reward=1):
         self.num_states = num_states
         self.reward = reward
         self.initial_state = initial_state

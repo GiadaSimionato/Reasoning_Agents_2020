@@ -1,0 +1,1 @@
+update,episodes,frames,FPS,duration,return_mean,return_std,return_min,return_max,return_bolt_mean,return_bolt_std,return_bolt_min,return_bolt_max,return_vanilla_mean,return_vanilla_std,return_vanilla_min,return_vanilla_max,success_rate,num_frames_mean,num_frames_std,num_frames_min,num_frames_max,entropy,value,policy_loss,value_loss,loss,grad_norm

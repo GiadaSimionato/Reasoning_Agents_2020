@@ -9,7 +9,7 @@ import gym
 import time
 
 import babyai.utils as utils
-
+import babyai.rl
 # Parse arguments
 
 parser = argparse.ArgumentParser()

@@ -1,0 +1,16 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "command": "python ${file} --env BabyAI-BossLevel-v0 --frames-per-proc 4 --recurrence 2",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

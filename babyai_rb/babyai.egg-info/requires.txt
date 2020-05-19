@@ -1,0 +1,5 @@
+gym>=0.9.6
+numpy==1.15.4
+torch>=0.4.1
+blosc>=1.5.1
+gym_minigrid@ https://github.com/maximecb/gym-minigrid/archive/master.zip

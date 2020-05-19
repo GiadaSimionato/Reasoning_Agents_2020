@@ -35,8 +35,8 @@ parser.add_argument("--discount", type=float, default=0.99,
                     help="discount factor (default: 0.99)")
 parser.add_argument("--reward-scale", type=float, default=20.,
                     help="Reward scale multiplier")
-parser.add_argument("--rb-prop", action="store_true", default=False,
-                    help="restraining bolt reward proportional to normal reward")
+parser.add_argument("--rb-prop", type=float, default=0.,
+                    help="restraining bolt reward proportionality factor")
 parser.add_argument("--gae-lambda", type=float, default=0.99,
                     help="lambda coefficient in GAE formula (default: 0.99, 1 means no gae)")
 parser.add_argument("--value-loss-coef", type=float, default=0.5,

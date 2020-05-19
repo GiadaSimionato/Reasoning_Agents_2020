@@ -16,7 +16,7 @@ def worker(conn, env, rb, rb_prop):
                 if rb:
                     rb_reward = rb.get_reward()
                     if rb_prop:
-                        rb_reward *= reward
+                        rb_reward *= reward * rb_prop
                     rb.reset()
             conn.send((obs, reward + rb_reward, rb_reward, reward, done, info))
         elif cmd == "reset":
@@ -71,7 +71,7 @@ class ParallelEnv(gym.Env):
             if self.rbs[0]:
                 rb_reward = self.rbs[0].get_reward()
                 if self.rb_prop:
-                    rb_reward *= reward
+                    rb_reward *= reward * self.rb_prop
                 self.rbs[0].reset()
             # print(reward)
         results = zip(*[(obs, reward + rb_reward, rb_reward, reward, done, info)] +

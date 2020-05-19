@@ -77,7 +77,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--env",
     help="gym environment to load",
-    default='BabyAI-GoToRedBall-v0'
+    default='BabyAI-GoToRedBallGrey-v0'
 )
 parser.add_argument(
     "--seed",

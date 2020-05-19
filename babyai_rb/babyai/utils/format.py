@@ -72,6 +72,7 @@ class InstructionsPreprocessor(object):
             instrs[i, :len(instr)] = instr
 
         instrs = torch.tensor(instrs, device=device, dtype=torch.long)
+        # print(instrs)
         return instrs
 
 

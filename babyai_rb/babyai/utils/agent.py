@@ -48,16 +48,18 @@ class ModelAgent(Agent):
         self.argmax = argmax
         self.memory = None
 
-    def act_batch(self, many_obs):
+    def act_batch(self, many_obs, rbs=None):
         if self.memory is None:
             self.memory = torch.zeros(
                 len(many_obs), self.model.memory_size, device=self.device)
         elif self.memory.shape[0] != len(many_obs):
             raise ValueError("stick to one batch size for the lifetime of an agent")
         preprocessed_obs = self.obss_preprocessor(many_obs, device=self.device)
-
+        bolt_states = torch.tensor([rb.current_state if rb else None for rb in rbs],
+                                    device=self.device, dtype=torch.float)
         with torch.no_grad():
-            model_results = self.model(preprocessed_obs, self.memory)
+            model_results = self.model(preprocessed_obs, self.memory,
+                             bolt_states=bolt_states)
             dist = model_results['dist']
             value = model_results['value']
             self.memory = model_results['memory']

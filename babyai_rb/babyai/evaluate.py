@@ -56,22 +56,35 @@ def evaluate_demo_agent(agent, episodes):
 
 class ManyEnvs(gym.Env):
 
-    def __init__(self, envs):
+    def __init__(self, envs, rbs, rb_prop=1):
         self.envs = envs
+        self.rbs = rbs
         self.done = [False] * len(self.envs)
+        self.rb_prop = rb_prop
 
     def seed(self, seeds):
         [env.seed(seed) for seed, env in zip(seeds, self.envs)]
 
     def reset(self):
         many_obs = [env.reset() for env in self.envs]
+        for rb in self.rbs:
+            if rb:
+                rb.reset()
         self.done = [False] * len(self.envs)
         return many_obs
 
     def step(self, actions):
-        self.results = [env.step(action) if not done else self.last_results[i]
-                        for i, (env, action, done)
-                        in enumerate(zip(self.envs, actions, self.done))]
+        def add_rb_reward(res, rb):
+            obs, reward, done, info = res
+            if rb and done:
+                rb_reward = rb.get_reward()
+                if self.rb_prop:
+                    rb_reward *= reward * self.rb_prop
+                reward += rb_reward
+            return obs, reward, done, info
+        self.results = [add_rb_reward(env.step(action), rb) if not done else self.last_results[i]
+                        for i, (env, action, done, rb)
+                        in enumerate(zip(self.envs, actions, self.done, self.rbs))]
         self.done = [result[2] for result in self.results]
         self.last_results = self.results
         return zip(*self.results)
@@ -81,14 +94,27 @@ class ManyEnvs(gym.Env):
 
 
 # Returns the performance of the agent on the environment for a particular number of episodes.
-def batch_evaluate(agent, env_name, seed, episodes, return_obss_actions=False):
+def batch_evaluate(agent, env_name, seed, episodes, return_obss_actions=False, rb=None, bolt_state=False, rb_prop = 1):
     num_envs = min(256, episodes)
 
     envs = []
+    rbs = []
     for i in range(num_envs):
         env = gym.make(env_name)
         envs.append(env)
-    env = ManyEnvs(envs)
+
+        if not rb:
+            rbs.append(None)
+        elif rb == "SimpleBallVisit":
+            from babyai.rl.rb import SimpleBallVisitRestrainingBolt
+            rbs.append(SimpleBallVisitRestrainingBolt())
+        elif rb == "ObjectsVisitRestrainingBolt":
+            from babyai.rl.rb import ObjectsVisitRestrainingBolt
+            rbs.append(ObjectsVisitRestrainingBolt())
+        else:
+            raise ValueError("Incorrect restraining bolt name: {}".format(rb))
+
+    env = ManyEnvs(envs, rbs, rb_prop)
 
     logs = {
         "num_frames_per_episode": [],
@@ -112,7 +138,7 @@ def batch_evaluate(agent, env_name, seed, episodes, return_obss_actions=False):
             obss = [[] for _ in range(num_envs)]
             actions = [[] for _ in range(num_envs)]
         while (num_frames == 0).any():
-            action = agent.act_batch(many_obs)['action']
+            action = agent.act_batch(many_obs, rbs=rbs)['action']
             if return_obss_actions:
                 for i in range(num_envs):
                     if not already_done[i]:

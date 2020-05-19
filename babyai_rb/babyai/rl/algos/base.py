@@ -57,6 +57,7 @@ class BaseAlgo(ABC):
         # Store parameters
 
         self.env = ParallelEnv(envs, rbs, rb_prop)
+        self.rbs = rbs
         self.acmodel = acmodel
         self.acmodel.train()
         self.num_frames_per_proc = num_frames_per_proc
@@ -142,10 +143,12 @@ class BaseAlgo(ABC):
             # Do one agent-environment interaction
 
             preprocessed_obs = self.preprocess_obss(self.obs, device=self.device)
+            bolt_states = torch.tensor([rb.current_state if rb else None for rb in self.rbs],
+             device=self.device, dtype=torch.float)
             # print(type(preprocessed_obs))
-            # exit(0)
+            # exit()
             with torch.no_grad():
-                model_results = self.acmodel(preprocessed_obs, self.memory * self.mask.unsqueeze(1))
+                model_results = self.acmodel(preprocessed_obs, self.memory * self.mask.unsqueeze(1), bolt_states)
                 dist = model_results['dist']
                 value = model_results['value']
                 memory = model_results['memory']
@@ -212,8 +215,10 @@ class BaseAlgo(ABC):
         # Add advantage and return to experiences
 
         preprocessed_obs = self.preprocess_obss(self.obs, device=self.device)
+        bolt_states = torch.tensor([rb.current_state if rb else None for rb in self.rbs], device=self.device, dtype=torch.float)
+
         with torch.no_grad():
-            next_value = self.acmodel(preprocessed_obs, self.memory * self.mask.unsqueeze(1))['value']
+            next_value = self.acmodel(preprocessed_obs, self.memory * self.mask.unsqueeze(1), bolt_states)['value']
 
         for i in reversed(range(self.num_frames_per_proc)):
             next_mask = self.masks[i+1] if i < self.num_frames_per_proc - 1 else self.mask

@@ -43,13 +43,14 @@ class ExpertControllerFiLM(nn.Module):
 
 class ACModel(nn.Module, babyai.rl.RecurrentACModel):
     def __init__(self, obs_space, action_space,
-                 image_dim=128, memory_dim=128, instr_dim=128,
+                 image_dim=128, memory_dim=128, instr_dim=128, use_bolt_state=False,
                  use_instr=False, lang_model="gru", use_memory=False, arch="cnn1",
                  aux_info=None):
         super().__init__()
 
         # Decide which components are enabled
         self.use_instr = use_instr
+        self.use_bolt_state = use_bolt_state
         self.use_memory = use_memory
         self.arch = arch
         self.lang_model = lang_model
@@ -118,6 +119,8 @@ class ACModel(nn.Module, babyai.rl.RecurrentACModel):
         self.embedding_size = self.semi_memory_size
         if self.use_instr and not "filmcnn" in arch:
             self.embedding_size += self.final_instr_dim
+        if self.use_bolt_state:
+            self.embedding_size += 1
 
         if arch.startswith("expert_filmcnn"):
             if arch == "expert_filmcnn":
@@ -204,7 +207,7 @@ class ACModel(nn.Module, babyai.rl.RecurrentACModel):
     def semi_memory_size(self):
         return self.memory_dim
 
-    def forward(self, obs, memory, instr_embedding=None):
+    def forward(self, obs, memory, bolt_states=None, instr_embedding=None):
         if self.use_instr and instr_embedding is None:
             instr_embedding = self._get_instr_embedding(obs.instr)
         if self.use_instr and self.lang_model == "attgru":
@@ -254,6 +257,9 @@ class ACModel(nn.Module, babyai.rl.RecurrentACModel):
             extra_predictions = {info: self.extra_heads[info](embedding) for info in self.extra_heads}
         else:
             extra_predictions = dict()
+
+        if self.use_bolt_state:
+            embedding = torch.cat([embedding, bolt_states.reshape(bolt_states.size()[0], -1)], axis=1)
 
         x = self.actor(embedding)
         dist = Categorical(logits=F.log_softmax(x, dim=1))

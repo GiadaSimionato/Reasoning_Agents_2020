@@ -31,6 +31,8 @@ parser.add_argument("--algo", default='ppo',
                     help="algorithm to use (default: ppo)")
 parser.add_argument("--rb", default=None,
                     help="restraining bolt to use (default: None)")
+parser.add_argument("--bolt-state", action="store_true", default=False,
+                    help="use the state of the bolts in the model")
 parser.add_argument("--discount", type=float, default=0.99,
                     help="discount factor (default: 0.99)")
 parser.add_argument("--reward-scale", type=float, default=20.,
@@ -62,6 +64,7 @@ for i in range(args.procs):
     envs.append(env)
     if not args.rb:
         rbs.append(None)
+        args.bolt_state = False
     elif args.rb == "SimpleBallVisit":
         from babyai.rl.rb import SimpleBallVisitRestrainingBolt
         rbs.append(SimpleBallVisitRestrainingBolt())
@@ -80,6 +83,7 @@ model_name_parts = {
     'algo': args.algo,
     'rb': args.rb,
     'rb_prop': args.rb_prop,
+    'bolt_state': args.bolt_state,
     'arch': args.arch,
     'instr': instr,
     'mem': mem,
@@ -87,7 +91,7 @@ model_name_parts = {
     'info': '',
     'coef': '',
     'suffix': suffix}
-default_model_name = "{env}_{algo}_{rb}_{rb_prop}_{arch}_{instr}_{mem}_seed{seed}{info}{coef}_{suffix}".format(**model_name_parts)
+default_model_name = "{env}_{algo}_{rb}_{rb_prop}_{bolt_state}_{arch}_{instr}_{mem}_seed{seed}{info}{coef}_{suffix}".format(**model_name_parts)
 if args.pretrained_model:
     default_model_name = args.pretrained_model + '_pretrained_' + default_model_name
 args.model = args.model.format(**model_name_parts) if args.model else default_model_name
@@ -108,7 +112,7 @@ if acmodel is None:
         acmodel = utils.load_model(args.pretrained_model, raise_not_found=True)
     else:
         acmodel = ACModel(obss_preprocessor.obs_space, envs[0].action_space,
-                          args.image_dim, args.memory_dim, args.instr_dim,
+                          args.image_dim, args.memory_dim, args.instr_dim, args.bolt_state,
                           not args.no_instr, args.instr_arch, not args.no_mem, args.arch)
 
 obss_preprocessor.vocab.save()
@@ -200,48 +204,48 @@ while status['num_frames'] < args.frames:
     # Update parameters
 
     update_start_time = time.time()
-    logs = algo.update_parameters()
+    # logs = algo.update_parameters()
     update_end_time = time.time()
 
-    status['num_frames'] += logs["num_frames"]
-    status['num_episodes'] += logs['episodes_done']
+    # status['num_frames'] += logs["num_frames"]
+    # status['num_episodes'] += logs['episodes_done']
     status['i'] += 1
 
-    # Print logs
+    # # Print logs
 
-    if status['i'] % args.log_interval == 0:
-        total_ellapsed_time = int(time.time() - total_start_time)
-        fps = logs["num_frames"] / (update_end_time - update_start_time)
-        duration = datetime.timedelta(seconds=total_ellapsed_time)
-        return_per_episode = utils.synthesize(logs["return_per_episode"])
-        bolt_return_per_episode = utils.synthesize(logs["bolt_return_per_episode"])
-        vanilla_return_per_episode = utils.synthesize(logs["vanilla_return_per_episode"])
-        success_per_episode = utils.synthesize(
-            [1 if r > 0 else 0 for r in logs["return_per_episode"]])
-        num_frames_per_episode = utils.synthesize(logs["num_frames_per_episode"])
+    # if status['i'] % args.log_interval == 0:
+    #     total_ellapsed_time = int(time.time() - total_start_time)
+    #     fps = logs["num_frames"] / (update_end_time - update_start_time)
+    #     duration = datetime.timedelta(seconds=total_ellapsed_time)
+    #     return_per_episode = utils.synthesize(logs["return_per_episode"])
+    #     bolt_return_per_episode = utils.synthesize(logs["bolt_return_per_episode"])
+    #     vanilla_return_per_episode = utils.synthesize(logs["vanilla_return_per_episode"])
+    #     success_per_episode = utils.synthesize(
+    #         [1 if r > 0 else 0 for r in logs["return_per_episode"]])
+    #     num_frames_per_episode = utils.synthesize(logs["num_frames_per_episode"])
 
-        data = [status['i'], status['num_episodes'], status['num_frames'],
-                fps, total_ellapsed_time,
-                *return_per_episode.values(),
-                *bolt_return_per_episode.values(),
-                *vanilla_return_per_episode.values(),
-                success_per_episode['mean'],
-                *num_frames_per_episode.values(),
-                logs["entropy"], logs["value"], logs["policy_loss"], logs["value_loss"],
-                logs["loss"], logs["grad_norm"]]
+    #     data = [status['i'], status['num_episodes'], status['num_frames'],
+    #             fps, total_ellapsed_time,
+    #             *return_per_episode.values(),
+    #             *bolt_return_per_episode.values(),
+    #             *vanilla_return_per_episode.values(),
+    #             success_per_episode['mean'],
+    #             *num_frames_per_episode.values(),
+    #             logs["entropy"], logs["value"], logs["policy_loss"], logs["value_loss"],
+    #             logs["loss"], logs["grad_norm"]]
 
-        format_str = ("U {} | E {} | F {:06} | FPS {:04.0f} | D {} | R:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
-                      "Rb:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | Rv:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
-                      "S {:.2f} | F:xsmM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | "
-                      "pL {: .3f} | vL {:.3f} | L {:.3f} | gN {:.3f} | ")
+    #     format_str = ("U {} | E {} | F {:06} | FPS {:04.0f} | D {} | R:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
+    #                   "Rb:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | Rv:xsmM {: .2f} {: .2f} {: .2f} {: .2f} | "
+    #                   "S {:.2f} | F:xsmM {:.1f} {:.1f} {} {} | H {:.3f} | V {:.3f} | "
+    #                   "pL {: .3f} | vL {:.3f} | L {:.3f} | gN {:.3f} | ")
 
-        logger.info(format_str.format(*data))
-        if args.tb:
-            assert len(header) == len(data)
-            for key, value in zip(header, data):
-                writer.add_scalar(key, float(value), status['num_frames'])
+    #     logger.info(format_str.format(*data))
+    #     if args.tb:
+    #         assert len(header) == len(data)
+    #         for key, value in zip(header, data):
+    #             writer.add_scalar(key, float(value), status['num_frames'])
 
-        csv_writer.writerow(data)
+    #     csv_writer.writerow(data)
 
     # Save obss preprocessor vocabulary and model
 
@@ -255,7 +259,8 @@ while status['num_frames'] < args.frames:
         agent = ModelAgent(args.model, obss_preprocessor, argmax=True)
         agent.model = acmodel
         agent.model.eval()
-        logs = batch_evaluate(agent, test_env_name, args.val_seed, args.val_episodes)
+        logs = batch_evaluate(agent, test_env_name, args.val_seed, args.val_episodes, 
+                              rb=args.rb, bolt_state=args.bolt_state, rb_prop=args.rb_prop)
         agent.model.train()
         mean_return = np.mean(logs["return_per_episode"])
         success_rate = np.mean([1 if r > 0 else 0 for r in logs['return_per_episode']])

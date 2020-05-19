@@ -1,2 +1,3 @@
-babyai-rl/scripts/logs
-babyai-rl/scripts/models
+babyai_rl/scripts/logs
+babyai_rl/scripts/models
+babyai_rl/copy.sh

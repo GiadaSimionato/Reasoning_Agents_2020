@@ -1,4 +1,5 @@
 word,lambda_TL_expression
+and;$X$Y.FX&FY
 always;$X.H X
 go to;$X.at(X)
 the;$X.X
@@ -7,7 +8,6 @@ you;$X.X
 are;$X.X
 in front of;$X.at(X)
 breakroom;breakroom
-and;$X$Y.F(X&FY)
 report;$X$Y.report(X,Y)
 location;location
 of;$X.X

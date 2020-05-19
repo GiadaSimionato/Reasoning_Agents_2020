@@ -16,6 +16,7 @@ import time
 parser = argparse.ArgumentParser()
 parser.add_argument('--path', dest='path', default='./mappings.csv', type=str, help='Path to the mapping file')
 parser.add_argument('--sentence', dest='sentence', type=str, help='Sentence to translate')
+parser.add_argument('--set_pronouns', dest='set_pronouns', default='False', type=str, help='True/False')
 
 args = parser.parse_args()
 
@@ -97,7 +98,6 @@ def areAllObjects(exp):
 # :return bool: whether the element of the list are all functions
 
 def areAllFunctions(exp):
-
     for elem in exp:
         if elem[0]==[]:
             return False
@@ -136,16 +136,18 @@ def resolve(obj, func):
 # :return exp: list of lambda expressions after the one step of recursion
 
 def iter_step(exp):
-   
-    objs_indx = get_indexObj(exp)                   # list of indeces of objects
-    while objs_indx != []:                          # until there are objects to be resolved
-        i = objs_indx.pop(0)                        # remove item currently treated
-        objs_indx = [ x-1 for x in objs_indx]       # update new values of indeces
-        if i!=0 and areAllFunctions(exp[i-1]):      # classical case: resolve with the antecedent
-            temp = resolve(exp[i], exp[i-1])        # get application
-            exp[i-1] = temp                         # update list of expressions
-            exp.pop(i)                              # remove resolvent
-        elif (i==0 and areAllFunctions(exp[i+1])) or (i!=0 and areAllObjects(exp[i-1]) and areAllFunctions(exp[i+1])):      # whether the previous item not available while next is
+
+    objs_indx = get_indexObj(exp)                           # list of indeces of objects
+    while objs_indx != []:                                  # until there are objects to be resolved
+        i = objs_indx.pop(0)                                # remove item currently treated
+        objs_indx = [ x-1 for x in objs_indx]               # update new values of indeces
+        if i!=0 and areAllFunctions([exp[i-1]]):            # classical case: resolve with the antecedent
+            temp = resolve(exp[i], exp[i-1])                # get application
+            exp[i-1] = temp                                 # update list of expressions
+            exp.pop(i)                                      # remove resolvent
+        elif i==(len(exp)-1) and areAllObjects([exp[i-1]]):   # last element list whose previous is an object
+            continue
+        elif (i==0 and areAllFunctions([exp[i+1]])) or (i!=0 and areAllObjects([exp[i-1]]) and areAllFunctions([exp[i+1]])):      # whether the previous item not available while next is
             temp = resolve(exp[i], exp[i+1])
             exp[i+1] = temp
             exp.pop(i)
@@ -173,6 +175,19 @@ def beta_reduction(exp):
         exp = beta_reduction(exp)                   # recursive call
 
 
+# --- Function that simplifies the LTLf formula. ---
+# :param formula: formula to simplify
+# :return formula: simplified formula
+
+def remove_doubles(formula):
+
+    formula = re.sub('[F]+', 'F', formula)      # simplify chains of eventually
+    formula = re.sub('[G]+', 'G', formula)      # simplify chains of always
+    formula = re.sub('[U]+', 'U', formula)      # simplify chains of until
+    formula = re.sub('(!!)+', '', formula)      # simplify chains of not (if even number, then removed; if odd, then only one is kept)
+    formula = formula.replace('N', 'X')         # convert 'next' into formalism required by FFLOAT tool
+    return formula
+
 # --- Function that perdforms the grounding of the formula. ---
 # :param formula: final lambda expression
 # :return formula: LTLf grounded formula
@@ -180,10 +195,11 @@ def beta_reduction(exp):
 def ground(formula):
     
     formula = formula.replace(',', '_')
-    reg = '[a-z]+\([a-z_]+\)'
+    reg = '[a-z0-9]+\([a-z_0-9]+\)'
     occ = re.findall(reg, formula)      # find occurrences of the RE reg in the formula
     for elem in occ:
         formula = formula.replace(elem, elem.replace('(', '_').replace(')', ''))
+        formula = remove_doubles(formula)
     return formula
 
 
@@ -192,7 +208,7 @@ def ground(formula):
 # :param path: path of the mapping .csv file
 # :return lambda_exp: LTLf expression that is the translation of the sentence
 
-def NL2LTL(sent, path):
+def NL2LTL(sent, path, pro):
 
     mapping = load_mapping(path)                            # load rules
     comp = get_composite(mapping)                           # get list of all items made by more than one word
@@ -201,7 +217,14 @@ def NL2LTL(sent, path):
         sent = sent.replace(elem, elem.replace(' ', '_'))   # fix phrasal verbs
     tokenizer = nltk.RegexpTokenizer(r"\w+")
     sent = tokenizer.tokenize(sent)                         # remove punctuation and tokenize sentence
-    lambda_exp = get_lambda_TL_list(sent, mapping)          # get list lambda expressions
+    if pro.lower()=='true':                                 # substitute it with the last object
+        indx = sent.index('it')
+        sent = sent[0:indx]+sent[indx+1:]
+        lambda_exp = get_lambda_TL_list(sent, mapping)      # get list lambda expression
+        last_obj = get_indexObj(lambda_exp)[-1]
+        lambda_exp.insert(indx, lambda_exp[last_obj])
+    else:
+        lambda_exp = get_lambda_TL_list(sent, mapping)      # get list lambda expression
     beta_reduction(lambda_exp)                              # recursive function
     lambda_exp = lambda_exp[0][1]                           # get formula
     lambda_exp = ground(lambda_exp)                         # ground the formula
@@ -214,9 +237,10 @@ if __name__ == "__main__":
     i = time.time()
     sent = args.sentence
     path = args.path
+    pro = args.set_pronouns
     #sent = 'Go to the breakroom and report the location of the blue box!'
     #sent = 'When detect the blue box do not report the position of the recharge station'
-    LTLf = NL2LTL(sent, path)
+    LTLf = NL2LTL(sent, path, pro)
     print('Translated: ', sent)
     print('Into: ', LTLf)
     f = time.time()

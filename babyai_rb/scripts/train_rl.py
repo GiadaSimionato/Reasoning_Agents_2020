@@ -51,6 +51,8 @@ parser.add_argument("--ppo-epochs", type=int, default=4,
                     help="number of epochs for PPO (default: 4)")
 parser.add_argument("--save-interval", type=int, default=50,
                     help="number of updates between two saves (default: 50, 0 means no saving)")
+parser.add_argument("--gdrive-interval", type=int, default=200,
+                    help="number of updates between two gdrive saves (default: 200, 0 means no saving)")
 args = parser.parse_args()
 
 utils.seed(args.seed)
@@ -277,3 +279,8 @@ while status['num_frames'] < args.frames:
             logger.info("Return {: .2f}; best model is saved".format(mean_return))
         else:
             logger.info("Return {: .2f}; not the best model; not saved".format(mean_return))
+
+
+    if args.gdrive_interval > 0 and status['i'] % args.gdrive_interval == 0:
+        os.system("cp -r /content/Reasoning_Agents_2020/babyai_rb/scripts/logs /content/Reasoning_Agents_2020/babyai_rb/scripts/models /content/gdrive/My\ Drive/")
+

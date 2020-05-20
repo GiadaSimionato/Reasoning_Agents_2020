@@ -129,29 +129,79 @@ class ObjectsVisitRestrainingBolt(RestrainingBolt):
             self.current_state = 2
 
 
-# class OpenBoxRestrainingBolt(RestrainingBolt):
-#     NUM_STATES = 2
-#     FINAL_STATES = [1]  
+class OpenBoxRestrainingBolt(RestrainingBolt):
+    NUM_STATES = 3
+    FINAL_STATES = [0]  
 
-#     def __init__(self):
-#         super().__init__(num_states=ObjectsVisitRestrainingBolt.NUM_STATES,
-#                             final_states=ObjectsVisitRestrainingBolt.FINAL_STATES)
-#         self.last_direction = -1
+    def __init__(self):
+        super().__init__(num_states=ObjectsVisitRestrainingBolt.NUM_STATES,
+                            final_states=ObjectsVisitRestrainingBolt.FINAL_STATES)
+        self.last_direction = -1
 
-#     def transition(self, world_state):
-#         direction = world_state["direction"]
-#         obs = world_state["image"]
-#         if self.current_state == 0:
-#              if obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.BOX:
-#                  self.current_state = 1
-#         if self.current_state == 1:
-#            if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.FLOOR
-#         #         and self.last_direction == direction):
-#         #         self.current_state = 2
-#         #     elif obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] != BabyData.OBJECT.BOX:
-#         #         self.current_state = 0
-#         self.last_direction = direction
+    def transition(self, world_state):
+        direction = world_state["direction"]
+        obs = world_state["image"]
+        if self.current_state == 0:
+            if obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.BOX:
+                self.current_state = 1
+        if self.current_state == 1:
+            if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.FLOOR
+                and self.last_direction == direction):
+                self.current_state = 0
+            elif obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] != BabyData.OBJECT.BOX:
+                self.current_state = 2
+        self.last_direction = direction
 
+class VisitBoxRestrainingBolt(RestrainingBolt):
+    NUM_STATES = 2
+    FINAL_STATES = [1]  
+
+    def __init__(self):
+        super().__init__(num_states=ObjectsVisitRestrainingBolt.NUM_STATES,
+                            final_states=ObjectsVisitRestrainingBolt.FINAL_STATES)
+
+    def transition(self, world_state):
+        obs = world_state["image"]
+        if self.current_state == 0:
+            if obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.BOX:
+                self.current_state = 1
+
+class MultiBolt():
+
+    def __init__(self, bolts, same_rewards=True):
+        self.bolts = bolts
+        self.same_rewards = same_rewards
+        self.reset()
+
+    def reset(self):
+        for bolt in self.bolts:
+            bolt.reset()
+
+    def transition(self, world_state):
+        for bolt in self.bolts:
+            bolt.transition(world_state)
+        
+    def get_reward(self):
+        reward = 0
+        for bolt in self.bolts:
+            r = bolt.get_reward()
+            if self.same_rewards:
+                reward += r * 1/len(self.bolts)
+            else:
+                reward += r
+        return reward
+
+    @property
+    def current_state(self):
+        state = self.bolts[0].current_state
+        for bolt in self.bolts[1:]:
+            state += bolt.current_state * bolt.num_states
+        return state
+
+class VisitBoxAndPickMultiRestrainingBolt(MultiBolt):
+
+    def __init__(self):
+        super().__init__([VisitBoxRestrainingBolt(), OpenBoxRestrainingBolt()])
 
 class VisitAndPickRestrainingBolt(RestrainingBolt):
     NUM_STATES = 3

@@ -58,23 +58,12 @@ utils.seed(args.seed)
 env = gym.make(args.env)
 env.seed(args.seed)
 
-if not args.rb:
-    rb = None
-elif args.rb == "SimpleBallVisit":
-    from babyai.rl.rb import SimpleBallVisitRestrainingBolt
-    rb = SimpleBallVisitRestrainingBolt()
-elif args.rb == "ObjectsVisitRestrainingBolt":
-    from babyai.rl.rb import ObjectsVisitRestrainingBolt
-    rb = ObjectsVisitRestrainingBolt()
-elif args.rb == "VisitAndPickRestrainingBolt":
-    from babyai.rl.rb import VisitAndPickRestrainingBolt
-    rb = VisitAndPickRestrainingBolt()
-else:
-    raise ValueError("Incorrect restraining bolt name: {}".format(args.rb))
-
 global obs
 obs = env.reset()
 print("Mission: {}".format(obs["mission"]))
+
+# Load restraining bolt
+rb = utils.load_rb(args.rb)
 
 # Define agent
 agent = utils.load_agent(env, args.model, args.demos, args.demos_origin, args.argmax, args.env)

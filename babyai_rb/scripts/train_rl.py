@@ -22,7 +22,7 @@ from babyai.arguments import ArgumentParser
 from babyai.model import ACModel
 from babyai.evaluate import batch_evaluate
 from babyai.utils.agent import ModelAgent
-
+from babyai.utils.rb import load_bolt
 
 
 # Parse arguments
@@ -60,24 +60,13 @@ utils.seed(args.seed)
 # Generate environments
 envs = []
 rbs = []
+if not args.rb:
+    args.bolt_state = False
 for i in range(args.procs):
     env = gym.make(args.env)
     env.seed(100 * args.seed + i)
     envs.append(env)
-    if not args.rb:
-        rbs.append(None)
-        args.bolt_state = False
-    elif args.rb == "SimpleBallVisit":
-        from babyai.rl.rb import SimpleBallVisitRestrainingBolt
-        rbs.append(SimpleBallVisitRestrainingBolt())
-    elif args.rb == "ObjectsVisitRestrainingBolt":
-        from babyai.rl.rb import ObjectsVisitRestrainingBolt
-        rbs.append(ObjectsVisitRestrainingBolt())
-    elif args.rb == "VisitAndPickRestrainingBolt":
-        from babyai.rl.rb import VisitAndPickRestrainingBolt
-        rbs.append(VisitAndPickRestrainingBolt())
-    else:
-        raise ValueError("Incorrect restraining bolt name: {}".format(args.rb))
+    rbs.append(load_bolt(args.rb))
 
 # Define model name
 suffix = datetime.datetime.now().strftime("%y-%m-%d-%H-%M-%S")

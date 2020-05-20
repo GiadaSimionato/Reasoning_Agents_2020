@@ -1,5 +1,6 @@
 import numpy as np
 import gym
+from babyai.utils import load_bolt
 
 
 # Returns the performance of the agent on the environment for a particular number of episodes.
@@ -105,20 +106,7 @@ def batch_evaluate(agent, env_name, seed, episodes, return_obss_actions=False, r
     for i in range(num_envs):
         env = gym.make(env_name)
         envs.append(env)
-
-        if not rb:
-            rbs.append(None)
-        elif rb == "SimpleBallVisit":
-            from babyai.rl.rb import SimpleBallVisitRestrainingBolt
-            rbs.append(SimpleBallVisitRestrainingBolt())
-        elif rb == "ObjectsVisitRestrainingBolt":
-            from babyai.rl.rb import ObjectsVisitRestrainingBolt
-            rbs.append(ObjectsVisitRestrainingBolt())
-        elif rb == "VisitAndPickRestrainingBolt":
-            from babyai.rl.rb import VisitAndPickRestrainingBolt
-            rbs.append(VisitAndPickRestrainingBolt())
-        else:
-            raise ValueError("Incorrect restraining bolt name: {}".format(rb))
+        rbs.append(load_bolt(rb))
 
     env = ManyEnvs(envs, rbs, rb_prop)
 

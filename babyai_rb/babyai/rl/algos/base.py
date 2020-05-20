@@ -143,7 +143,7 @@ class BaseAlgo(ABC):
             # Do one agent-environment interaction
 
             preprocessed_obs = self.preprocess_obss(self.obs, device=self.device)
-            bolt_states = torch.tensor([rb.current_state if rb else None for rb in self.rbs],
+            bolt_states = torch.tensor([rb.current_state if rb else 0 for rb in self.rbs],
              device=self.device, dtype=torch.float)
             # print(type(preprocessed_obs))
             # exit()
@@ -215,7 +215,7 @@ class BaseAlgo(ABC):
         # Add advantage and return to experiences
 
         preprocessed_obs = self.preprocess_obss(self.obs, device=self.device)
-        bolt_states = torch.tensor([rb.current_state if rb else None for rb in self.rbs], device=self.device, dtype=torch.float)
+        bolt_states = torch.tensor([rb.current_state if rb else 0 for rb in self.rbs], device=self.device, dtype=torch.float)
 
         with torch.no_grad():
             next_value = self.acmodel(preprocessed_obs, self.memory * self.mask.unsqueeze(1), bolt_states)['value']

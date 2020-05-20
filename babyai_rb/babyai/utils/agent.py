@@ -55,8 +55,11 @@ class ModelAgent(Agent):
         elif self.memory.shape[0] != len(many_obs):
             raise ValueError("stick to one batch size for the lifetime of an agent")
         preprocessed_obs = self.obss_preprocessor(many_obs, device=self.device)
-        bolt_states = torch.tensor([rb.current_state if rb else None for rb in rbs],
+        if rbs:
+            bolt_states = torch.tensor([rb.current_state if rb else 0 for rb in rbs],
                                     device=self.device, dtype=torch.float)
+        else:
+            bolt_states = [None] * len(many_obs)
         with torch.no_grad():
             model_results = self.model(preprocessed_obs, self.memory,
                              bolt_states=bolt_states)

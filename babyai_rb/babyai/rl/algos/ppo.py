@@ -85,7 +85,7 @@ class PPOAlgo(BaseAlgo):
                     sb = exps[inds + i]
 
                     # Compute loss
-                    bolt_states = torch.tensor([rb.current_state for rb in self.rbs], device=self.device, dtype=torch.float)
+                    bolt_states = torch.tensor([rb.current_state if rb else 0 for rb in self.rbs], device=self.device, dtype=torch.float)
 
                     model_results = self.acmodel(sb.obs, memory * sb.mask, bolt_states)
                     dist = model_results['dist']

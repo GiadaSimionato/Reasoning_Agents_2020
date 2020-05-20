@@ -129,5 +129,30 @@ class ObjectsVisitRestrainingBolt(RestrainingBolt):
             self.current_state = 2
 
 
-#class ComplexBallVisitRestrainingBolt(RestrainingBolt):
-#    ...
+# class OpenBoxRestrainingBolt(RestrainingBolt):
+
+
+# class MultiBolt(RestrainingBolt):
+
+class VisitAndPickRestrainingBolt(RestrainingBolt):
+    NUM_STATES = 3
+    FINAL_STATES = [2]   
+
+    def __init__(self):
+        super().__init__(num_states=ObjectsVisitRestrainingBolt.NUM_STATES,
+                         final_states=ObjectsVisitRestrainingBolt.FINAL_STATES)
+        self.last_direction = -1
+
+    def transition(self, world_state):
+        direction = world_state["direction"]
+        obs = world_state["image"]
+        if self.current_state == 0:
+            if obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.BOX:
+                self.current_state = 1
+        if self.current_state == 1:
+            if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.FLOOR
+                and self.last_direction == direction):
+                self.current_state = 2
+            elif obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] != BabyData.OBJECT.BOX:
+                self.current_state = 0
+        self.last_direction = direction

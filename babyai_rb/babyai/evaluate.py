@@ -114,6 +114,9 @@ def batch_evaluate(agent, env_name, seed, episodes, return_obss_actions=False, r
         elif rb == "ObjectsVisitRestrainingBolt":
             from babyai.rl.rb import ObjectsVisitRestrainingBolt
             rbs.append(ObjectsVisitRestrainingBolt())
+        elif rb == "VisitAndPickRestrainingBolt":
+            from babyai.rl.rb import VisitAndPickRestrainingBolt
+            rbs.append(VisitAndPickRestrainingBolt())
         else:
             raise ValueError("Incorrect restraining bolt name: {}".format(rb))
 

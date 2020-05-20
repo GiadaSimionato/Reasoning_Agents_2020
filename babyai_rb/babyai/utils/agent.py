@@ -76,8 +76,8 @@ class ModelAgent(Agent):
                 'dist': dist,
                 'value': value}
 
-    def act(self, obs):
-        return self.act_batch([obs])
+    def act(self, obs, rbs=None):
+        return self.act_batch([obs], [rbs])
 
     def analyze_feedback(self, reward, done):
         if isinstance(done, tuple):

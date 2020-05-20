@@ -15,6 +15,10 @@ import babyai.rl
 parser = argparse.ArgumentParser()
 parser.add_argument("--env", required=True,
                     help="name of the environment to be run (REQUIRED)")
+parser.add_argument("--rb", default=None,
+                    help="restraining bolt to use (default: None)")
+parser.add_argument("--rb-prop", type=float, default=0.,
+                    help="restraining bolt reward proportionality factor")  
 parser.add_argument("--model", default=None,
                     help="name of the trained model (REQUIRED or --demos-origin or --demos REQUIRED)")
 parser.add_argument("--demos", default=None,
@@ -53,6 +57,20 @@ utils.seed(args.seed)
 
 env = gym.make(args.env)
 env.seed(args.seed)
+
+if not args.rb:
+    rb = None
+elif args.rb == "SimpleBallVisit":
+    from babyai.rl.rb import SimpleBallVisitRestrainingBolt
+    rb = SimpleBallVisitRestrainingBolt()
+elif args.rb == "ObjectsVisitRestrainingBolt":
+    from babyai.rl.rb import ObjectsVisitRestrainingBolt
+    rb = ObjectsVisitRestrainingBolt()
+elif args.rb == "VisitAndPickRestrainingBolt":
+    from babyai.rl.rb import VisitAndPickRestrainingBolt
+    rb = VisitAndPickRestrainingBolt()
+else:
+    raise ValueError("Incorrect restraining bolt name: {}".format(args.rb))
 
 global obs
 obs = env.reset()
@@ -96,8 +114,15 @@ while True:
     if args.manual_mode and renderer.window is not None:
         renderer.window.setKeyDownCb(keyDownCb)
     else:
-        result = agent.act(obs)
+        result = agent.act(obs, rb)
         obs, reward, done, _ = env.step(result['action'])
+        if rb:
+            rb.transition(obs)
+            if done:
+                rb_reward = rb.get_reward()
+                if args.rb_prop:
+                    rb_reward *= reward * args.rb_prop
+                reward += rb_reward
         agent.analyze_feedback(reward, done)
         if 'dist' in result and 'value' in result:
             dist, value = result['dist'], result['value']
@@ -111,6 +136,8 @@ while True:
             episode_num += 1
             env.seed(args.seed + episode_num)
             obs = env.reset()
+            if rb:
+                rb.reset()
             agent.on_reset()
             step = 0
         else:

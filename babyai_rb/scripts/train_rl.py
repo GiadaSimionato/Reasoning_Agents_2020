@@ -73,6 +73,9 @@ for i in range(args.procs):
     elif args.rb == "ObjectsVisitRestrainingBolt":
         from babyai.rl.rb import ObjectsVisitRestrainingBolt
         rbs.append(ObjectsVisitRestrainingBolt())
+    elif args.rb == "VisitAndPickRestrainingBolt":
+        from babyai.rl.rb import VisitAndPickRestrainingBolt
+        rbs.append(VisitAndPickRestrainingBolt())
     else:
         raise ValueError("Incorrect restraining bolt name: {}".format(args.rb))
 

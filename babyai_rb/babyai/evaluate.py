@@ -73,16 +73,19 @@ class ManyEnvs(gym.Env):
         self.done = [False] * len(self.envs)
         return many_obs
 
-    def step(self, actions):
-        def add_rb_reward(res, rb):
-            obs, reward, done, info = res
-            if rb and done:
+    def rb_step(self, res, rb):
+        obs, reward, done, info = res
+        if rb:
+            rb.transition(obs)
+            if done:
                 rb_reward = rb.get_reward()
                 if self.rb_prop:
                     rb_reward *= reward * self.rb_prop
                 reward += rb_reward
-            return obs, reward, done, info
-        self.results = [add_rb_reward(env.step(action), rb) if not done else self.last_results[i]
+        return obs, reward, done, info
+
+    def step(self, actions):
+        self.results = [self.rb_step(env.step(action), rb) if not done else self.last_results[i]
                         for i, (env, action, done, rb)
                         in enumerate(zip(self.envs, actions, self.done, self.rbs))]
         self.done = [result[2] for result in self.results]

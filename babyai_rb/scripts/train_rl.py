@@ -285,5 +285,6 @@ while status['num_frames'] < args.frames:
 
 
     if args.gdrive_interval > 0 and status['i'] % args.gdrive_interval == 0:
+        logger.info("Saving to gdrive")
         os.system("cp -r /content/Reasoning_Agents_2020/babyai_rb/scripts/logs /content/Reasoning_Agents_2020/babyai_rb/scripts/models /content/gdrive/My\ Drive/")
 

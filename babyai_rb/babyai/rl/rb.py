@@ -96,8 +96,8 @@ class SimpleBallVisitRestrainingBolt(RestrainingBolt):
     FINAL_STATES = [1]   
 
     def __init__(self):
-        super().__init__(num_states=FluentSimpleBallVisitRestrainingBolt.NUM_STATES,
-                         final_states=FluentSimpleBallVisitRestrainingBolt.FINAL_STATES)
+        super().__init__(num_states=SimpleBallVisitRestrainingBolt.NUM_STATES,
+                         final_states=SimpleBallVisitRestrainingBolt.FINAL_STATES)
 
     def transition(self, world_state):
         obs = world_state["image"]
@@ -134,8 +134,8 @@ class OpenBoxRestrainingBolt(RestrainingBolt):
     FINAL_STATES = [0]  
 
     def __init__(self):
-        super().__init__(num_states=ObjectsVisitRestrainingBolt.NUM_STATES,
-                            final_states=ObjectsVisitRestrainingBolt.FINAL_STATES)
+        super().__init__(num_states=OpenBoxRestrainingBolt.NUM_STATES,
+                            final_states=OpenBoxRestrainingBolt.FINAL_STATES)
         self.last_direction = -1
 
     def transition(self, world_state):
@@ -157,8 +157,8 @@ class VisitBoxRestrainingBolt(RestrainingBolt):
     FINAL_STATES = [1]  
 
     def __init__(self):
-        super().__init__(num_states=ObjectsVisitRestrainingBolt.NUM_STATES,
-                            final_states=ObjectsVisitRestrainingBolt.FINAL_STATES)
+        super().__init__(num_states=VisitBoxRestrainingBolt.NUM_STATES,
+                            final_states=VisitBoxRestrainingBolt.FINAL_STATES)
 
     def transition(self, world_state):
         obs = world_state["image"]
@@ -208,8 +208,8 @@ class VisitAndPickRestrainingBolt(RestrainingBolt):
     FINAL_STATES = [2]   
 
     def __init__(self):
-        super().__init__(num_states=ObjectsVisitRestrainingBolt.NUM_STATES,
-                         final_states=ObjectsVisitRestrainingBolt.FINAL_STATES)
+        super().__init__(num_states=VisitAndPickRestrainingBolt.NUM_STATES,
+                         final_states=VisitAndPickRestrainingBolt.FINAL_STATES)
         self.last_direction = -1
 
     def transition(self, world_state):

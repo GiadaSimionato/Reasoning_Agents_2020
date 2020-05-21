@@ -63,7 +63,7 @@ obs = env.reset()
 print("Mission: {}".format(obs["mission"]))
 
 # Load restraining bolt
-rb = utils.load_rb(args.rb)
+rb = utils.load_bolt(args.rb)
 
 # Define agent
 agent = utils.load_agent(env, args.model, args.demos, args.demos_origin, args.argmax, args.env)

@@ -1,0 +1,13 @@
+    
+    Sent -> Sent1 | Sent1 "&F" Sent1 | "F" Sent1 "&" Sent1
+    Sent1 -> Clause | (Clause "&" Clause)
+    Clause -> at(Descr) | pick(DescrNotDoor) | open(DescrDoor) | put_next_to(DescrNotDoor,Descr)
+    DescrDoor -> Article Color "door" LocSpec
+    DescrBall -> Article Color "ball" LocSpec
+    DescrBox -> Article Color "box" LocSpec
+    DescrKey -> Article Color "key" LocSpec
+    Descr -> DescrDoor | DescrBall | DescrBox | DescrKey
+    DescrNotDoor -> DescrBall | DescrBox | DescrKey
+    LocSpec -> "_onyourleft" | "_onyourright" |"_infrontofyou" | "_behindyou" |
+    Color ->  "red_" | "green_" | "blue_" | "purple_" | "yellow_" | "grey_" |
+    Article ->  "" | "" |

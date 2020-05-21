@@ -1,0 +1,13 @@
+    
+    Sent -> Sent1 | Sent1 "then" Sent1 | Sent1 "after_you" Sent1
+    Sent1 -> Clause | Clause "and" Clause
+    Clause -> "go_to" Descr | "pick_up" DescrNotDoor | "open" DescrDoor | "put" DescrNotDoor "next_to" Descr
+    DescrDoor -> Article Color "door" LocSpec
+    DescrBall -> Article Color "ball" LocSpec
+    DescrBox -> Article Color "box" LocSpec
+    DescrKey -> Article Color "key" LocSpec
+    Descr -> DescrDoor | DescrBall | DescrBox | DescrKey
+    DescrNotDoor -> DescrBall | DescrBox | DescrKey
+    LocSpec -> "on_your_left" | "on_your_right" |"in_front_of_you" | "behind_you" |
+    Color ->  "red" | "green" | "blue" | "purple" | "yellow" | "grey" |
+    Article ->  "the" | "a" |

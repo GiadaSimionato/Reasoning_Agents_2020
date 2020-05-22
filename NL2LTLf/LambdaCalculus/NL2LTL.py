@@ -1,9 +1,9 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------
 # Script for Natural Language (NL) to finite Linear Temporal Logic (LTLf) formulas translation.
 #
-# @author Giada Simionato <simionato.1822614@studenti.uniroma1.it>
+# @authors Kaszuba Sara (1695639), Postolache Emilian (1649271), Ratini Riccardo (1656801), Simionato Giada (1822614).
 #
-# To deal with semantic ambiguities please modify .csv file.
+# LAMBDA CALCULUS based approach. To deal with semantic ambiguities please modify .csv file.
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 import nltk
@@ -227,6 +227,7 @@ def NL2LTL(sent, path, pro):
         lambda_exp = get_lambda_TL_list(sent, mapping)      # get list lambda expression
     beta_reduction(lambda_exp)                              # recursive function
     lambda_exp = lambda_exp[0][1]                           # get formula
+    print('Into (not grounded): ', lambda_exp)
     lambda_exp = ground(lambda_exp)                         # ground the formula
     return lambda_exp
 

@@ -1,0 +1,4 @@
+The file "stanford-corenlp-4.0.0-models.jar", which contains the models used in this application is too big for gitHub repository.
+
+It can be downloaded here:
+https://stanfordnlp.github.io/CoreNLP/download.html

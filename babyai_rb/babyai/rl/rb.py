@@ -156,23 +156,23 @@ class ObjectsVisitRestrainingBolt(RestrainingBolt):
     def transition(self, world_state):
         obs = world_state["image"]
         # at_grey_ball
-        if ((obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
-            [BabyData.OBJECT.BALL, BabyData.COLOR.GREY, 0]).all() and 
-            self.current_state == 0):
-            self.current_state = 1
+        if self.current_state == 0:
+            if ((obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
+            [BabyData.OBJECT.BALL, BabyData.COLOR.GREY, 0]).all()):
+                self.current_state = 1
         # at_grey_key
-        if ((obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
-            [BabyData.OBJECT.KEY, BabyData.COLOR.GREY, 0]).all() and 
-            self.current_state == 1):
-            self.current_state = 2
+        if self.current_state == 1:
+            if ((obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
+            [BabyData.OBJECT.KEY, BabyData.COLOR.GREY, 0]).all()):
+                self.current_state = 2
 
 class ObjectsVisitSeparateRestrainingBolt(RestrainingBolt):
     NUM_STATES = 4
     FINAL_STATES = [3]  
 
     def __init__(self):
-        super().__init__(num_states=VisitBoxRestrainingBolt.NUM_STATES,
-                            final_states=VisitBoxRestrainingBolt.FINAL_STATES)
+        super().__init__(num_states=ObjectsVisitSeparateRestrainingBolt.NUM_STATES,
+                            final_states=ObjectsVisitSeparateRestrainingBolt.FINAL_STATES)
 
     def transition(self, world_state):
         obs = world_state["image"]
@@ -183,11 +183,11 @@ class ObjectsVisitSeparateRestrainingBolt(RestrainingBolt):
             if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
                 [BabyData.OBJECT.KEY, BabyData.COLOR.GREY, 0]).all():
                 self.current_state = 2
-        if self.current_state == 1:
+        elif self.current_state == 1:
             if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
                 [BabyData.OBJECT.KEY, BabyData.COLOR.GREY, 0]).all():
                 self.current_state = 3
-        if self.current_state == 2:
+        elif self.current_state == 2:
             if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
                 [BabyData.OBJECT.BALL, BabyData.COLOR.GREY, 0]).all():
                 self.current_state = 3
@@ -211,7 +211,7 @@ class OpenBoxRestrainingBolt(RestrainingBolt):
         if self.current_state == 0:
             if obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.BOX:
                 self.current_state = 1
-        if self.current_state == 1:
+        elif self.current_state == 1:
             if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.FLOOR
                 and self.last_direction == direction):
                 self.current_state = 0
@@ -253,7 +253,7 @@ class VisitAndPickRestrainingBolt(RestrainingBolt):
         if self.current_state == 0:
             if obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.BOX:
                 self.current_state = 1
-        if self.current_state == 1:
+        elif self.current_state == 1:
             if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.FLOOR
                 and self.last_direction == direction):
                 self.current_state = 2

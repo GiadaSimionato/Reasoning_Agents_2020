@@ -8,6 +8,9 @@ def load_bolt(name):
     elif name == "ObjectsVisitRestrainingBolt":
         from babyai.rl.rb import ObjectsVisitRestrainingBolt
         return ObjectsVisitRestrainingBolt()
+    elif name == "ObjectsVisitSeparateRestrainingBolt":
+        from babyai.rl.rb import VisitBoxAndPickMultiRestrainingBolt
+        return VisitBoxAndPickMultiRestrainingBolt()
     elif name == "VisitAndPickRestrainingBolt":
         from babyai.rl.rb import VisitAndPickRestrainingBolt
         return VisitAndPickRestrainingBolt()

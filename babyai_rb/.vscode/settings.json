@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/emilian/.cache/pypoetry/virtualenvs/babyai--VjNHjxD-py3.8/bin/python3",
+    "python.pythonPath": "/home/emilian/.cache/pypoetry/virtualenvs/babyai-T3PKdtJl-py3.6/bin/python3",
     "python.linting.pylintEnabled": true,
     "python.linting.flake8Enabled": false,
     "python.linting.enabled": true

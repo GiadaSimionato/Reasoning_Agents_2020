@@ -45,7 +45,39 @@ class FluentRestrainingBolt(RestrainingBolt):
         super().reset()
         self.current_fluents = set()
 
-# -------------------
+class MultiBolt():
+
+    def __init__(self, bolts, same_rewards=True):
+        self.bolts = bolts
+        self.same_rewards = same_rewards
+        self.reset()
+
+    def reset(self):
+        for bolt in self.bolts:
+            bolt.reset()
+
+    def transition(self, world_state):
+        for bolt in self.bolts:
+            bolt.transition(world_state)
+        
+    def get_reward(self):
+        reward = 0
+        for bolt in self.bolts:
+            r = bolt.get_reward()
+            if self.same_rewards:
+                reward += r * 1/len(self.bolts)
+            else:
+                reward += r
+        return reward
+
+    @property
+    def current_state(self):
+        state = self.bolts[0].current_state
+        for bolt in self.bolts[1:]:
+            state += bolt.current_state * bolt.num_states
+        return state
+
+# -------------------- Baby Data --------------------
 
 class BabyColor():
     RED = 0
@@ -70,6 +102,9 @@ class BabyData():
     FRONT_X = 3
     FRONT_Y = -2
 
+# ------------------  test bolts --------------------
+
+
 class FluentSimpleBallVisitRestrainingBolt(FluentRestrainingBolt):
     # FLUENTS: "at_blue_ball"
     NUM_STATES = 2
@@ -91,6 +126,7 @@ class FluentSimpleBallVisitRestrainingBolt(FluentRestrainingBolt):
         elif "at_blue_ball" in self.current_fluents:
             self.current_fluents.remove("at_blue_ball")
 
+
 class SimpleBallVisitRestrainingBolt(RestrainingBolt):
     NUM_STATES = 2
     FINAL_STATES = [1]   
@@ -106,6 +142,8 @@ class SimpleBallVisitRestrainingBolt(RestrainingBolt):
             [BabyData.OBJECT.BALL, BabyData.COLOR.BLUE, 0]).all():
             self.current_state = 1
 
+
+# ----------------- ambiguity bolts ------------------
 
 class ObjectsVisitRestrainingBolt(RestrainingBolt):
     NUM_STATES = 3
@@ -127,6 +165,35 @@ class ObjectsVisitRestrainingBolt(RestrainingBolt):
             [BabyData.OBJECT.KEY, BabyData.COLOR.GREY, 0]).all() and 
             self.current_state == 1):
             self.current_state = 2
+
+class ObjectsVisitSeparateRestrainingBolt(RestrainingBolt):
+    NUM_STATES = 4
+    FINAL_STATES = [3]  
+
+    def __init__(self):
+        super().__init__(num_states=VisitBoxRestrainingBolt.NUM_STATES,
+                            final_states=VisitBoxRestrainingBolt.FINAL_STATES)
+
+    def transition(self, world_state):
+        obs = world_state["image"]
+        if self.current_state == 0:
+            if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
+                [BabyData.OBJECT.BALL, BabyData.COLOR.GREY, 0]).all():
+                self.current_state = 1
+            if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
+                [BabyData.OBJECT.KEY, BabyData.COLOR.GREY, 0]).all():
+                self.current_state = 2
+        if self.current_state == 1:
+            if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
+                [BabyData.OBJECT.KEY, BabyData.COLOR.GREY, 0]).all():
+                self.current_state = 3
+        if self.current_state == 2:
+            if (obs[BabyData.FRONT_X, BabyData.FRONT_Y, :] == 
+                [BabyData.OBJECT.BALL, BabyData.COLOR.GREY, 0]).all():
+                self.current_state = 3
+
+
+# ----------------- second level -------------------
 
 
 class OpenBoxRestrainingBolt(RestrainingBolt):
@@ -165,38 +232,6 @@ class VisitBoxRestrainingBolt(RestrainingBolt):
         if self.current_state == 0:
             if obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] == BabyData.OBJECT.BOX:
                 self.current_state = 1
-
-class MultiBolt():
-
-    def __init__(self, bolts, same_rewards=True):
-        self.bolts = bolts
-        self.same_rewards = same_rewards
-        self.reset()
-
-    def reset(self):
-        for bolt in self.bolts:
-            bolt.reset()
-
-    def transition(self, world_state):
-        for bolt in self.bolts:
-            bolt.transition(world_state)
-        
-    def get_reward(self):
-        reward = 0
-        for bolt in self.bolts:
-            r = bolt.get_reward()
-            if self.same_rewards:
-                reward += r * 1/len(self.bolts)
-            else:
-                reward += r
-        return reward
-
-    @property
-    def current_state(self):
-        state = self.bolts[0].current_state
-        for bolt in self.bolts[1:]:
-            state += bolt.current_state * bolt.num_states
-        return state
 
 class VisitBoxAndPickMultiRestrainingBolt(MultiBolt):
 

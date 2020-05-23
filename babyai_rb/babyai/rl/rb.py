@@ -102,6 +102,16 @@ class BabyData():
     FRONT_X = 3
     FRONT_Y = -2
 
+    AGENT_X = 3
+    AGENT_Y = -1
+
+    LEFT_X = 2
+    LEFT_Y = -1
+
+    RIGHT_X = 4
+    RIGHT_Y = -1
+
+    
 # ------------------  test bolts --------------------
 
 
@@ -172,7 +182,7 @@ class ObjectsVisitSeparateRestrainingBolt(RestrainingBolt):
 
     def __init__(self):
         super().__init__(num_states=ObjectsVisitSeparateRestrainingBolt.NUM_STATES,
-                            final_states=ObjectsVisitSeparateRestrainingBolt.FINAL_STATES)
+                        final_states=ObjectsVisitSeparateRestrainingBolt.FINAL_STATES)
 
     def transition(self, world_state):
         obs = world_state["image"]
@@ -260,3 +270,30 @@ class VisitAndPickRestrainingBolt(RestrainingBolt):
             elif obs[BabyData.FRONT_X, BabyData.FRONT_Y, 0] != BabyData.OBJECT.BOX:
                 self.current_state = 0
         self.last_direction = direction
+
+# ----------------- third level -----------------------
+
+class ThirdLevelRestrainingBolt(RestrainingBolt):
+    NUM_STATES = 3
+    FINAL_STATES = [2]   
+
+    def __init__(self):
+        super().__init__(num_states=ThirdLevelRestrainingBolt.NUM_STATES,
+                         final_states=ThirdLevelRestrainingBolt.FINAL_STATES)
+
+    def transition(self, world_state):
+        obs = world_state["image"]
+
+        # agent picks key 
+        if self.current_state == 0:
+            if obs[BabyData.AGENT_X, BabyData.AGENT_Y, 0] == BabyData.OBJECT.KEY:
+                self.current_state = 1
+        elif self.current_state == 1:
+            if ((obs[BabyData.LEFT_X, BabyData.LEFT_Y, 0] == BabyData.OBJECT.BOX or
+                obs[BabyData.RIGHT_X, BabyData.RIGHT_Y, 0] == BabyData.OBJECT.BOX) and 
+                obs[BabyData.AGENT_X, BabyData.AGENT_Y, 0] != BabyData.OBJECT.KEY):
+                self.current_state = 2
+            elif (not (obs[BabyData.LEFT_X, BabyData.LEFT_Y, 0] == BabyData.OBJECT.BOX or
+                obs[BabyData.RIGHT_X, BabyData.RIGHT_Y, 0] == BabyData.OBJECT.BOX) and 
+                obs[BabyData.AGENT_X, BabyData.AGENT_Y, 0] != BabyData.OBJECT.KEY):
+                self.current_state = 0

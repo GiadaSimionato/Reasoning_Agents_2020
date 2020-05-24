@@ -1,4 +1,4 @@
-word,lambda_TL_expression
+word;lambda_TL_expression
 always;$X.H X
 go to;$X.at(X)
 the;$X.X

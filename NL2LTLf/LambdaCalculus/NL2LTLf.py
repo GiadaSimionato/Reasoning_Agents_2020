@@ -212,6 +212,7 @@ def NL2LTL(sent, path, pro):
 
     mapping = load_mapping(path)                            # load rules
     comp = get_composite(mapping)                           # get list of all items made by more than one word
+    print('Translated: ', sent)
     sent = sent.lower()                                     # to lower sentence
     for elem in comp:
         sent = sent.replace(elem, elem.replace(' ', '_'))   # fix phrasal verbs
@@ -242,7 +243,6 @@ if __name__ == "__main__":
     #sent = 'Go to the breakroom and report the location of the blue box!'
     #sent = 'When detect the blue box do not report the position of the recharge station'
     LTLf = NL2LTL(sent, path, pro)
-    print('Translated: ', sent)
     print('Into: ', LTLf)
     f = time.time()
     print('Time elapsed: ', f-i, 's')

@@ -1,4 +1,4 @@
-word,lambda_TL_expression
+word;lambda_TL_expression
 and;$X$Y.FX&FY
 always;$X.H X
 go to;$X.at(X)

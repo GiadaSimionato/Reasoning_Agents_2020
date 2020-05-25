@@ -1,5 +1,5 @@
     
-    Sent -> Sent1 | Sent1 "&F" Sent1 | "F" Sent1 "&" Sent1
+    Sent -> Sent1 | "F"(Sent1 "&F" Sent1) | "F"("F" Sent1 "&" Sent1)
     Sent1 -> Clause | (Clause "&" Clause)
     Clause -> at(Descr) | pick(DescrNotDoor) | open(DescrDoor) | put_next_to(DescrNotDoor,Descr)
     DescrDoor -> Article Color "door" LocSpec

@@ -217,8 +217,10 @@ if __name__ == "__main__":
     rd_parser = nltk.RecursiveDescentParser(grammar)            # parse sentence according to NL CFG
     for p in rd_parser.parse(sent):
         tree=p
+        tree.pretty_print()
     try:
         ptree = ParentedTree.convert(tree)                      # convert tree into parentedTree
+        #pretty_print(ptree)
     except:
         print("+++ The sentence doesn't belong to the language of the grammar.")
         sys.exit()

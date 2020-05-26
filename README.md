@@ -75,7 +75,7 @@ To generate the Deterministic Finite State Automata (DFAs) use the FFloat tool, 
 `https://flloat.herokuapp.com/`
 
 ## BabyAI and Restraining Bolts
-The experiments in BabyAI have been tested in Python 3.6.9 (the latest version of Python supported by Google Colab). In order to install the required dependencies, `pip install .` needs to called inside the `babyai_rb` folter.
+The experiments in BabyAI have been tested in Python 3.6.9 (the latest version of Python supported by Google Colab). In order to install the required dependencies `pip install .` has to called inside the `babyai_rb` folter.
 
 ## Presentation
 

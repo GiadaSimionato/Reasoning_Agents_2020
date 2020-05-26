@@ -75,7 +75,30 @@ To generate the Deterministic Finite State Automata (DFAs) use the FFloat tool, 
 `https://flloat.herokuapp.com/`
 
 ## BabyAI and Restraining Bolts
-The experiments in BabyAI have been tested in Python 3.6.9 (the latest version of Python supported by Google Colab). In order to install the required dependencies `pip install .` has to called inside the `babyai_rb` folter.
+The experiments in BabyAI require Python 3.6.9 (the latest version of Python supported by Google Colab). In order to install the required dependencies call `pip install .` inside the `babyai_rb` folter.
+
+### Training
+To train an agent with a bolt execute `train_rl.py` in `babyai_rb/scripts/` specifying the following parameters.
+ * `-env`: the level of BabyAI
+ * `--rb`: the required bolt 
+ * `--rb-prop`: 0 for constant bolt reward (equal to 1), 1 for proportional bolt reward
+ * `--bolt-state`: should be present if bolt state should be added to the Actor Critic embedding vector
+ * `--tb`: log to Tensorboard
+Other parameters can be specified: calling `--h` displays all possible parameters.
+
+The list of available bolts is the following:
+ * `SimpleBallVisitRestrainingBolt`: makes the agent visit a blue ball
+ * `VisitBoxAndPickRestrainingBolt`: used in Experiment 1
+ * `VisitBoxAndPickMultiRestrainingBolt`: specifies the same command from Experiment 1 using a MultiBolt
+ * `ObjectsVisitRestrainingBolt`: used in Experiment 2 for the sequential behaviour
+ * `ObjectsVisitSeparateRestrainingBolt`: used in Experiment 2 for the sequential behaviour
+ * `ThirdExperimentRestrainingBolt`: used in Experiment 3
+
+For example to train the model from Example 1 call the following command:
+
+```
+python babyai_rb/scripts/train_rl.py --env 
+```
 
 ## Presentation
 

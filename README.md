@@ -101,11 +101,11 @@ For example to train the model from Experiment 1 call the following command:
 python babyai_rb/scripts/train_rl.py --env BabyAI-GoToRedBall-v0 --rb VisitBoxAndPickRestrainingBolt --rb-prop 0 --bolt-state --tb
 ```
 After training, a new model will be added to the `babyai_rb/scripts/models/` (and saved to `/content/gdrive/My\ Drive/models` when working on Colab). 
-Each training session generates useful logs in `babyai_rb/scripts/logs` (and in `/content/gdrive/My\ Drive/models` on Colab) If `--tb` is added to `train_rl.py` logs are written also in TensorBoard format.
+Each training session generates useful logs in `babyai_rb/scripts/logs` (and in `/content/gdrive/My\ Drive/models` on Colab). If `--tb` is added to `train_rl.py` logs are written also in TensorBoard format.
 
 ### Demo
 To visualize a demo of the agent execute `babyai_rb/scripts/enjoy.py` specifying the environment, the model and the 
-restraining bolt (and additionally `rb-prop`)
+restraining bolt (and additionally `rb-prop`).
 For example to visualize the model trained previously (Experiment 1) call
 ```
 python babyai_rb/scripts/enjoy.py --env BabyAI-GoToRedBall-v0 --model $MODEL --rb VisitBoxAndPickRestrainingBolt --rb-prop 0

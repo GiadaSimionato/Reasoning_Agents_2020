@@ -11,17 +11,17 @@ def load_bolt(name):
     elif name == "ObjectsVisitSeparateRestrainingBolt":
         from babyai.rl.rb import ObjectsVisitSeparateRestrainingBolt
         return ObjectsVisitSeparateRestrainingBolt()
-    elif name == "VisitAndPickRestrainingBolt":
-        from babyai.rl.rb import VisitAndPickRestrainingBolt
-        return VisitAndPickRestrainingBolt()
+    elif name == "VisitBoxAndPickRestrainingBolt":
+        from babyai.rl.rb import VisitBoxAndPickRestrainingBolt
+        return VisitBoxAndPickRestrainingBolt()
     elif name == "VisitBoxAndPickMultiRestrainingBolt":
         from babyai.rl.rb import VisitBoxAndPickMultiRestrainingBolt
         return VisitBoxAndPickMultiRestrainingBolt()
     elif name == "VisitBoxRestrainingBolt":
         from babyai.rl.rb import VisitBoxAndPickMultiRestrainingBolt
         return VisitBoxAndPickMultiRestrainingBolt()
-    elif name == "ThirdLevelRestrainingBolt":
-        from babyai.rl.rb import ThirdLevelRestrainingBolt
-        return ThirdLevelRestrainingBolt()
+    elif name == "ThirdExperimentRestrainingBolt":
+        from babyai.rl.rb import ThirdExperimentRestrainingBolt
+        return ThirdExperimentRestrainingBolt()
     else:
         raise ValueError("Incorrect restraining bolt name: {}".format(name))

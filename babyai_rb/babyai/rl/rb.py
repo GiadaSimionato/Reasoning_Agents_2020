@@ -248,13 +248,13 @@ class VisitBoxAndPickMultiRestrainingBolt(MultiBolt):
     def __init__(self):
         super().__init__([VisitBoxRestrainingBolt(), OpenBoxRestrainingBolt()])
 
-class VisitAndPickRestrainingBolt(RestrainingBolt):
+class VisitBoxAndPickRestrainingBolt(RestrainingBolt):
     NUM_STATES = 3
     FINAL_STATES = [2]   
 
     def __init__(self):
-        super().__init__(num_states=VisitAndPickRestrainingBolt.NUM_STATES,
-                         final_states=VisitAndPickRestrainingBolt.FINAL_STATES)
+        super().__init__(num_states=VisitBoxAndPickRestrainingBolt.NUM_STATES,
+                         final_states=VisitBoxAndPickRestrainingBolt.FINAL_STATES)
         self.last_direction = -1
 
     def transition(self, world_state):
@@ -273,13 +273,13 @@ class VisitAndPickRestrainingBolt(RestrainingBolt):
 
 # ----------------- third level -----------------------
 
-class ThirdLevelRestrainingBolt(RestrainingBolt):
+class ThirdExperimentRestrainingBolt(RestrainingBolt):
     NUM_STATES = 3
     FINAL_STATES = [2]   
 
     def __init__(self):
-        super().__init__(num_states=ThirdLevelRestrainingBolt.NUM_STATES,
-                         final_states=ThirdLevelRestrainingBolt.FINAL_STATES)
+        super().__init__(num_states=ThirdExperimentRestrainingBolt.NUM_STATES,
+                         final_states=ThirdExperimentRestrainingBolt.FINAL_STATES)
 
     def transition(self, world_state):
         obs = world_state["image"]

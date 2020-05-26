@@ -1,8 +1,6 @@
 # Reasoning_Agents_2020
 Project repository for the course of Reasoning Agents 2020, Sapienza University of Rome.
 
-https://www.canva.com/design/DAD8-U_KgHY/8uHCv_Ko46ZrQyIf6mbM8w/view?website#2
-
 ## NL2LTLf translation for restraining bolts application in BabyAI environment
 
 This repository contains the tools and APIs used to perform natural language translation into Linear Temporal Logic over finite traces (LTLf) and the implementation of Restraining Bolts within the BabyAI platform.

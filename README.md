@@ -72,7 +72,7 @@ The class `NL2LTLTranslator` contains a main method with some examples.
 
 ## LTLf2DFA
 To generate the Deterministic Finite State Automata (DFAs) use the FFloat tool, avaiable here:
- [](https://flloat.herokuapp.com/)
+https://flloat.herokuapp.com/
 
 ## BabyAI and Restraining Bolts
 The experiments in BabyAI require Python 3.6.9 (the latest version of Python supported by Google Colab). In order to install the required dependencies call `pip install .` inside the `babyai_rb` folder.
@@ -114,7 +114,7 @@ where `$MODEL` is the name of the trained model in `babyai_rb/scripts/models/`.
 
 ## Presentation
 
-The source of the slides can be found at: `https://www.canva.com/design/DAD8-U_KgHY/8uHCv_Ko46ZrQyIf6mbM8w/view?utm_content=DAD8-U_KgHY&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton`
+The source of the slides can be found at https://www.canva.com/design/DAD8-U_KgHY/8uHCv_Ko46ZrQyIf6mbM8w/view?utm_content=DAD8-U_KgHY&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton`
 
 ## References
 

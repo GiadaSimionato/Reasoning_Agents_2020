@@ -78,13 +78,14 @@ To generate the Deterministic Finite State Automata (DFAs) use the FFloat tool, 
 The experiments in BabyAI require Python 3.6.9 (the latest version of Python supported by Google Colab). In order to install the required dependencies call `pip install .` inside the `babyai_rb` folter.
 
 ### Training
-To train an agent with a bolt execute `train_rl.py` in `babyai_rb/scripts/` specifying the following parameters.
+To train an agent with a bolt execute `train_rl.py` in `babyai_rb/scripts/` specifying the following parameters
  * `-env`: the level of BabyAI
  * `--rb`: the required bolt 
  * `--rb-prop`: 0 for constant bolt reward (equal to 1), 1 for proportional bolt reward
- * `--bolt-state`: should be present if bolt state should be added to the Actor Critic embedding vector
+ * `--bolt-state`: if active the bolt state is added to the Actor Critic embedding vector (should be always used)
  * `--tb`: log to Tensorboard
-Other parameters can be specified: calling `--h` displays all possible parameters.
+ * `--gdrive-interval`: specifies the number of updates after which data is saved on Google Drive if training on Colab (in order to work, gdrive has to be mounted on `/content/gdrive`); default is 200
+Other parameters can be specified; calling `--h` displays all possible parameters.
 
 The list of available bolts is the following:
  * `SimpleBallVisitRestrainingBolt`: makes the agent visit a blue ball
@@ -94,11 +95,21 @@ The list of available bolts is the following:
  * `ObjectsVisitSeparateRestrainingBolt`: used in Experiment 2 for the sequential behaviour
  * `ThirdExperimentRestrainingBolt`: used in Experiment 3
 
-For example to train the model from Example 1 call the following command:
+For example to train the model from Experiment 1 call the following command:
+```
+python babyai_rb/scripts/train_rl.py --env BabyAI-GoToRedBall-v0 --rb VisitBoxAndPickRestrainingBolt --rb-prop 0 --bolt-state --tb
+```
+After training, a new model will be added to the `babyai_rb/scripts/models/` (and saved to `/content/gdrive/My\ Drive/models` when working on Colab). 
 
+To visualize a demo of the agent execute `babyai_rb/scripts/enjoy.py` specifying the environment, the model and the 
+restraining bolt (and additionally `rb-prop`)
+For example to visualize the model trained previously (Experiment 1) call
 ```
-python babyai_rb/scripts/train_rl.py --env 
+python babyai_rb/scripts/enjoy.py --env BabyAI-GoToRedBall-v0 --model $MODEL --rb VisitBoxAndPickRestrainingBolt --rb-prop 0
 ```
+where `$MODEL` is the name of the trained model in `babyai_rb/scripts/models/`.
+
+Each training session generates useful logs in the ` babyai_rb/scripts/logs` (and in `/content/gdrive/My\ Drive/models`) when working with Colab. If the `--tb` argument is added in `train_rl.py` then logs are written also in TensorBoard format.
 
 ## Presentation
 

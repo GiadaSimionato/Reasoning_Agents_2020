@@ -84,7 +84,8 @@ To train an agent with a bolt execute `train_rl.py` in `babyai_rb/scripts/` spec
  * `--rb-prop`: 0 for constant bolt reward (equal to 1), 1 for proportional bolt reward
  * `--bolt-state`: if active the bolt state is added to the Actor Critic embedding vector (should be always used)
  * `--tb`: log to Tensorboard
- * `--gdrive-interval`: specifies the number of updates after which data is saved on Google Drive if training on Colab (in order to work, gdrive has to be mounted on `/content/gdrive`); default is 200
+ * `--gdrive-interval`: specifies the number of updates after which data is saved on Google Drive if training on Colab (in order to work, gdrive has to be mounted on `/content/gdrive`); default is 200.
+ 
 Other parameters can be specified; calling `--h` displays all possible parameters.
 
 The list of available bolts is the following:

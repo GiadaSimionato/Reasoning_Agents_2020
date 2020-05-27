@@ -65,7 +65,7 @@ Requirement **Java 1.8+**
 The repository already contains **WordNet 2.1**, **VerbNet 3.0** and **StanfordCoreNLP API 4.0**. Language model must be downloaded.
 * Copy `NLPPipeline/src/` on your project
 * Go to `src/lib/` and follow `"IMPORTANT -model download.txt"` to download the language model
-#### Run
+#### Usage
 Javadocs for all auxiliary classes are written. 
 To translate a sentence use `NL2LTLTranslator.translate(sentence)`.
 The class `NL2LTLTranslator` contains a main method with some examples.

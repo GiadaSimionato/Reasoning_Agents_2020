@@ -14,6 +14,7 @@ Contents:
 -	[NL2LTLf](#NL2LTLf)
 - [LTLf2DFA](#LTLf2DFA)
 - [BabyAI and Restraining Bolts](#BabyAI-and-Restraining-Bolts)
+- [Presentation](#presentation)
 - [References](#references)
 - [Team Members](#team-members)
 
@@ -114,7 +115,7 @@ where `$MODEL` is the name of the trained model in `babyai_rb/scripts/models/`.
 
 ## Presentation
 
-The source of the slides can be found at `https://www.canva.com/design/DAD8-U_KgHY/share/preview?token=5IhFC8fZCMMFHAy15NQYnw&role=EDITOR&utm_content=DAD8-U_KgHY&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton`
+The source of the slides can be found at https://www.canva.com/design/DAD8-U_KgHY/share/preview?token=5IhFC8fZCMMFHAy15NQYnw&role=EDITOR&utm_content=DAD8-U_KgHY&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton
 
 ## References
 

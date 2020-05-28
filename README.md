@@ -114,7 +114,7 @@ where `$MODEL` is the name of the trained model in `babyai_rb/scripts/models/`.
 
 ## Presentation
 
-The source of the slides can be found at https://www.canva.com/design/DAD8-U_KgHY/8uHCv_Ko46ZrQyIf6mbM8w/view?utm_content=DAD8-U_KgHY&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton`
+The source of the slides can be found at `https://www.canva.com/design/DAD8-U_KgHY/share/preview?token=5IhFC8fZCMMFHAy15NQYnw&role=EDITOR&utm_content=DAD8-U_KgHY&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton`
 
 ## References
 

@@ -76,17 +76,19 @@ To generate the Deterministic Finite State Automata (DFAs) use the FFloat tool, 
 https://flloat.herokuapp.com/
 
 ## Video
-In this folder the videos of the three experiments are presented:
+In this folder the videos of the 3 experiments are presented:
 * Experiment1: contains videos taken by working with Level 3 of BabyAI framework:
   * Video_BEHAVIOUR_Eat: the agent "eats" objects found during its path to quickly complete the task and reach the goal
   * Video_VANILLA: the only goal of the agent is to reach the red ball
   * Video_VISIT_AND_PICK_RB: the agent has to visit a box before going to the red ball
   * Video_VISIT_AND_PICK_MultiRB: the task of the agent is the same as the previous video, but it was performed using the MultiBolt
+  
 * Experiment2: contains videos taken by working with Level 2 of BabyAI framework:
   * Video_BEHAVIOUR_KeyBallAndBallKey: the agent has to see a grey key and a grey ball, in any order, before reaching the        red ball
   * Video_BEHAVIOUR_TAKE_KEY: the agent finds a key and then it goes to the red ball
   * Video_OBJECT_VISIT_BallKey: the agent has to visit a grey ball before seeing a grey key, then it has to go to the red ball
   * Video_VANILLA: the only goal of the agent is to reach the red ball
+  
 * Experiment3: contains videos taken by working with Level 3 of BabyAI framework:
   * out_rallentato: the agent takes a key and, if he is near a box, he leaves the key and he goes to the red ball
 

@@ -24,9 +24,20 @@ Contents:
   - **LambdaCalculus** folder contains the implementation of the approach based on lambda-calculus as well as examples of mapping files.
   - **NLPPipeline/src** folder contains the implementation of the approach based on the NLP pipeline.
 - **Video:** Contains the videos of the experiments performed in this work +Still to be updated!+
-  - **Experiment1** folder contains all the video regarding the first experiment.
-  - **Experiment2** folder contains all the video regarding the second experiment.
-  - **Experiment3** folder contains all the video regarding the third experiment.
+  - **Experiment1** folder contains all the video regarding the first experiment (Level 3 of BabyAI Framework).
+    * Video_BEHAVIOUR_Eat: the agent "eats" objects that he finds in his path, to quickly complete the task and reach the goal.
+    * Video_VANILLA: the only goal of the agent is to reach the red ball.
+    * Video_VISIT_AND_PICK_RB: the agent has to visit and pick a box before going to the red ball.
+    * Video_VISIT_AND_PICK_MultiRB: the task of the agent is the same as in the previous video, but it was performed using the MultiBolt.
+  - **Experiment2** folder contains all the video regarding the second experiment (Level 2 of BabyAI Framework).
+    * Video_BEHAVIOUR_KeyBallAndBallKey: the agent has to see a grey key and a grey ball, without ant order specification, before reaching the red ball.
+    * Video_BEHAVIOUR_TAKE_KEY: the agent finds and takes a key before going to the red ball-
+    * Video_OBJECT_VISIT_BallKey: the agent has to visit a grey ball before seeing a grey key, then it has to reach the red ball.
+    * Video_VANILLA: the only goal of the agent is to go to the red ball.
+  - **Experiment3** folder contains all the video regarding the third experiment (Level 3 of BabyAI Framework).
+    * out_rallentato: the agent takes a key and, if he is near a box, he leaves the key and goes to the red ball.
+  
+
 - **babyai_rb:** Contains babyai environment and the restraining bolt implementation +Still to be updated!+
 - **[RA] Project Presentation.pdf** is the PDF presentation of this work.
 
@@ -74,24 +85,6 @@ The class `NL2LTLTranslator` contains a main method with some examples.
 ## LTLf2DFA
 To generate the Deterministic Finite State Automata (DFAs) use the FFloat tool, avaiable here:
 https://flloat.herokuapp.com/
-
-## Video
-In this folder the videos of the 3 experiments are presented:
-* Experiment1: contains videos taken by working with Level 3 of BabyAI framework:
-  * Video_BEHAVIOUR_Eat: the agent "eats" objects that he finds in his path, to quickly complete the task and reach the goal
-  * Video_VANILLA: the only goal of the agent is to reach the red ball
-  * Video_VISIT_AND_PICK_RB: the agent has to visit and pick a box before going to the red ball
-  * Video_VISIT_AND_PICK_MultiRB: the task of the agent is the same as in the previous video, but it was performed using the MultiBolt
-  
-* Experiment2: contains videos taken by working with Level 2 of BabyAI framework:
-  * Video_BEHAVIOUR_KeyBallAndBallKey: the agent has to see a grey key and a grey ball, without ant order specification, before reaching the red ball
-  * Video_BEHAVIOUR_TAKE_KEY: the agent finds and takes a key before going to the red ball
-  * Video_OBJECT_VISIT_BallKey: the agent has to visit a grey ball before seeing a grey key, then it has to reach the red ball
-  * Video_VANILLA: the only goal of the agent is to go to the red ball
-  
-* Experiment3: contains videos taken by working with Level 3 of BabyAI framework:
-  * out_rallentato: the agent takes a key and, if he is near a box, he leaves the key and goes to the red ball
-
 
 ## BabyAI and Restraining Bolts
 The experiments in BabyAI require Python 3.6.9 (the latest version of Python supported by Google Colab). In order to install the required dependencies call `pip install .` inside the `babyai_rb` folder.

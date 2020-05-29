@@ -1,4 +1,4 @@
-# Reasoning Agents 2020
+﻿# Reasoning Agents 2020
 Project repository for the course of Reasoning Agents 2020, Sapienza University of Rome.
 
 ## NL2LTLf translation for restraining bolts application in BabyAI environment
@@ -23,19 +23,19 @@ Contents:
   - **Cfg** folder contains the implementation of the approach based on Context-Free Grammars as well as an example of the required grammars.
   - **LambdaCalculus** folder contains the implementation of the approach based on lambda-calculus as well as examples of mapping files.
   - **NLPPipeline/src** folder contains the implementation of the approach based on the NLP pipeline.
-- **Video:** Contains the videos of the experiments performed in this work +Still to be updated!+
-  - **Experiment1** folder contains all the video regarding the first experiment (Level 3 of BabyAI Framework).
-    * Video_BEHAVIOUR_Eat: the agent "eats" objects that he finds in his path, to quickly complete the task and reach the goal.
+- **Video:** Contains the videos of the experiments performed in this work
+  - **Experiment1** folder contains all the video regarding the first experiment (Level 3 of BabyAI Platform).
+    * Video_BEHAVIOUR_Eat: the agent "eats" objects that it finds in its path, to complete more quickly the task and reach the goal.
     * Video_VANILLA: the only goal of the agent is to reach the red ball.
     * Video_VISIT_AND_PICK_RB: the agent has to visit and pick a box before going to the red ball.
-    * Video_VISIT_AND_PICK_MultiRB: the task of the agent is the same as in the previous video, but it was performed using the MultiBolt.
-  - **Experiment2** folder contains all the video regarding the second experiment (Level 2 of BabyAI Framework).
-    * Video_BEHAVIOUR_KeyBallAndBallKey: the agent has to see a grey key and a grey ball, without ant order specification, before reaching the red ball.
-    * Video_BEHAVIOUR_TAKE_KEY: the agent finds and takes a key before going to the red ball-
-    * Video_OBJECT_VISIT_BallKey: the agent has to visit a grey ball before seeing a grey key, then it has to reach the red ball.
+    * Video_VISIT_AND_PICK_MultiRB: the agent has to visit and pick a box before going to the red ball (performed using MultiBolt).
+  - **Experiment2** folder contains all the video regarding the second experiment (Level 2 of BabyAI Platform).
+    * Video_BEHAVIOUR_KeyBallAndBallKey: the agent has to go to a grey key and to a grey ball, without any constraints about the order, before reaching the red ball.
+    * Video_BEHAVIOUR_TAKE_KEY: the agent finds the grey key before being at the grey ball, so it picks it up to drop it (for being at it) when it is at the grey ball to achieve the task more quickly.
+    * Video_OBJECT_VISIT_BallKey: the agent has to visit a grey ball before being at a grey key, then it has to reach the red ball.
     * Video_VANILLA: the only goal of the agent is to go to the red ball.
-  - **Experiment3** folder contains all the video regarding the third experiment (Level 3 of BabyAI Framework).
-    * out_rallentato: the agent takes a key and, if he is near a box, he leaves the key and goes to the red ball.
+  - **Experiment3** folder contains all the video regarding the third experiment (Level 3 of BabyAI Platform).
+    * VIDEO_pick_and_place: the agent pick up a key and, if it is near a box, it drops the key and goes to the red ball.
   
 
 - **babyai_rb:** Contains babyai environment and the restraining bolt implementation +Still to be updated!+

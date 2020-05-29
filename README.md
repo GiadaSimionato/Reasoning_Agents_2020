@@ -38,7 +38,8 @@ Contents:
     * VIDEO_pick_and_place: the agent pick up a key and, if it is near a box, it drops the key and goes to the red ball.
   
 
-- **babyai_rb:** Contains babyai environment and the restraining bolt implementation +Still to be updated!+
+- **babyai_rb:** Contains babyai environment and the restraining bolt implementation
+The main addition to the original babyai project is the file `babyai/rl/rb.py` where we have defined the abstract `RestrainingBolt` class and the particular implementations that we have listed in the Training section. For the rest of the files, please see the original `BabyAI` documentation at https://github.com/mila-iqia/babyai.
 - **[RA] Project Presentation.pdf** is the PDF presentation of this work.
 
 

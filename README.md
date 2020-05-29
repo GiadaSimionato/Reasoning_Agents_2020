@@ -39,7 +39,8 @@ Contents:
   
 
 - **babyai_rb:** Contains babyai environment and the restraining bolt implementation
-The main addition to the original babyai project is the file `babyai/rl/rb.py` where we have defined the abstract `RestrainingBolt` class and the particular implementations that we have listed in the Training section. For the rest of the files, please see the original `BabyAI` documentation at https://github.com/mila-iqia/babyai.
+
+  - The main addition to the original babyai project is the file `babyai/rl/rb.py` where we have defined the abstract `RestrainingBolt` class and the particular implementations that we have listed in the Training section. For the rest of the files, please see the original `BabyAI` documentation at https://github.com/mila-iqia/babyai.
 - **[RA] Project Presentation.pdf** is the PDF presentation of this work.
 
 
